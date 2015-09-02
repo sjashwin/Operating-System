@@ -6,8 +6,6 @@
 package priorityscheduler;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Scanner;
 
 /**
  *
@@ -16,19 +14,15 @@ import java.util.Scanner;
 public class PriorityScheduler {
     static LinkedList<Process> waiting = null ;
     static LinkedList<Process> ready = null ;
-    static Scanner reader = null ;
     static int timer = 0 ;
     static int current = 0 ;
-    static ListIterator<Process> iter = null ;
-    static LinkedList<Process> clone = null ;
     /**
      * @param args the command line arguments
      */
     PriorityScheduler(){
         waiting = new LinkedList<>()  ;
         ready = new LinkedList<>() ;
-        reader = new Scanner(System.in) ;
-        clone = (LinkedList<Process>) waiting.clone() ;
+        timer = 0 ;
     }
     public static void main(String[] args) {
         // TODO code application logic here
@@ -51,7 +45,7 @@ public class PriorityScheduler {
                 }
             }
             Collections.sort( ready, new Sort() );
-            System.out.println( ready.element().process_id) ;
+            //System.out.println( ready.element().process_id) ;
             ready.element().burst_time-- ;
             if( ready.element().burst_time <= 0 ){
                 ready.element().set_finish_time(timer);
@@ -60,9 +54,11 @@ public class PriorityScheduler {
             if( ready.isEmpty())
                 break ;
         }
-         
-        /*for( Process current : process){
-            System.out.println( current.priority ) ;
-        }*/
+        System.out.println("id|priority|burst_time|start|end_time|waiting") ;
+        for( Process i: waiting){
+            System.out.println(i.process_id+"\t"+i.get_priority()+
+                    "\t"+i.get_burst_time()+"\t"+i.arrival_time+"\t"+i.end_time+"\t"+
+                    (i.end_time-i.arrival_time)) ;
+        }
     }
 }
