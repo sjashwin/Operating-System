@@ -4,17 +4,25 @@
 #include<sys/ipc.h>
 
 #define SHMKEY 90
-#define SHMSIZE 90
+#define SHMSIZE 512
+#define SIZE 5
 
 int main(){
 
-	key_t key = SHMSIZE ;
-	int *shared_memory, shmid, counter ;
-	if((shmid = shmget(key, SHMSIZE, IPC_CREAT)) < 0 )
+	key_t key = SHMKEY ;
+	char *shared_memory, entity ;
+	int shmid, row, col ;
+	if((shmid = shmget(key, SHMSIZE, 0666)) < 0 )
 		perror("SHMGET") ;
-	if(*(shared_memory = (int *)shmat(shmid, (void *)0, 0)) == -1)
+	if(*(shared_memory = (char *)shmat(shmid, (void *)0, 0)) == -1)
 		perror("SHMAT") ;
-	while( *shared_memory != 0 )
-		printf("%d\n", *shared_memory++) ;
+	shared_memory[SIZE*0+3] = 'P' ;
+	for ( row = 0; row<SIZE ; row++ ){
+		for(col = 0; col<SIZE; col++){
+			entity = shared_memory[SIZE*row+col] ;
+			printf("%c\t", entity) ;
+		}
+		printf("\n") ;
+	}
 	return 0 ;
 }
