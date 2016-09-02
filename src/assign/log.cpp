@@ -5,6 +5,7 @@
 int main(int argc, char *argv[]){
 	int c, x ;
 	std::string filename ;
+	//refer to http://man7.org/linux/man-pages/man3/getopt.3.html
 	while ((c =getopt(argc, argv, "-hnl"))!= -1){
 		switch(c){
 			case 'h':
