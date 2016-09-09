@@ -1,10 +1,13 @@
 #include<iostream>
 #include<unistd.h>
 #include<cstdlib>
+#include<fstream>
 
 int main(int argc, char *argv[]){
 	int c, x ;
-	std::string filename ;
+	std::string filename = "./logfile.txt", filename_temp ;
+	std::ofstream logfile ;
+	logfile.open(filename.c_str()) ;
 	//refer to http://man7.org/linux/man-pages/man3/getopt.3.html
 	while ((c =getopt(argc, argv, "-hnl"))!= -1){
 		switch(c){
@@ -14,10 +17,13 @@ int main(int argc, char *argv[]){
 			case 'n':
 				x = atoi(argv[optind]) ;
 				std::cout << x << std::endl ;
+				logfile << "x = "<< x << std::endl ;
 				break ;
 			case 'l':
-				filename = argv[optind] ;
-				std::cout<< filename << std::endl ;
+				filename_temp = argv[optind] ;
+				std::cout<< filename_temp << std::endl ;
+				std::rename( filename.c_str(), filename_temp.c_str() ) ;
+				filename = filename_temp ;
 				break ;
 			case '?':
 				std::cout << "not available"<<std::endl ;
